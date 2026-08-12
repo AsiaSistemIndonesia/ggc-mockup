@@ -5,9 +5,12 @@ import { useAuth } from "@/components/providers/auth-provider";
 import { ChevronDown, AlertCircle } from "lucide-react";
 import { ConnectionStatus } from "@/components/ui-custom/connectivity/connection-status";
 
+import sitesData from "@/data/sites/sites.json";
+
 export default function LoginPage() {
   const [email, setEmail] = useState("admin@ggc.demo");
   const [password, setPassword] = useState("demo123");
+  const [site, setSite] = useState("MAMUJU");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { login } = useAuth();
@@ -176,6 +179,29 @@ export default function LoginPage() {
               </a>
             </div>
 
+            <div>
+              <label className="hidden md:block text-sm font-bold text-[#64748B] mb-1.5">
+                Lokasi Site / Stockpile
+              </label>
+              <div className="relative">
+                <select
+                  value={site}
+                  onChange={(e) => setSite(e.target.value)}
+                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm text-gray-800 bg-white outline-none focus:border-[#1B7A3D] focus:ring-1 focus:ring-[#1B7A3D] appearance-none cursor-pointer font-medium"
+                >
+                  {sitesData.map((s) => (
+                    <option key={s.id} value={s.id}>
+                      Site: {s.name}, {s.province}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown
+                  size={16}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
+                />
+              </div>
+            </div>
+
             <button
               type="submit"
               disabled={isSubmitting}
@@ -186,7 +212,7 @@ export default function LoginPage() {
           </form>
 
           {/* Subtle Quick Demo User Picker */}
-          <div className="mt-8 pt-4 border-t border-gray-100 flex flex-col items-center">
+          {/* <div className="mt-8 pt-4 border-t border-gray-100 flex flex-col items-center">
             <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">
               Pilih Akun Demo (Password: demo123)
             </span>
@@ -241,7 +267,7 @@ export default function LoginPage() {
                 Viewer
               </button>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
