@@ -3,7 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { navigation } from "@/lib/navigation";
-import { X } from "lucide-react";
+import { LogOut, X } from "lucide-react";
+import { ConnectionStatus } from "@/components/ui-custom/connectivity/connection-status";
+
+import { useAuth } from "@/components/providers/auth-provider";
+import { canAccessRoute } from "@/lib/rbac/rbac-engine";
+import { logout } from "@/lib/auth";
 
 export function Sidebar({
   isOpen,
@@ -13,6 +18,11 @@ export function Sidebar({
   onClose: () => void;
 }) {
   const pathname = usePathname();
+  const { user } = useAuth();
+
+  const filteredNavigation = navigation.filter((item) =>
+    canAccessRoute(user?.role, item.href),
+  );
 
   return (
     <>
@@ -41,7 +51,7 @@ export function Sidebar({
         </div>
 
         <nav className="flex flex-col flex-1 overflow-y-auto">
-          {navigation.map((item) => {
+          {filteredNavigation.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
             return (
@@ -64,6 +74,18 @@ export function Sidebar({
             );
           })}
         </nav>
+
+        <div className="flex lg:hidden p-4 bg-[#0B421E]">
+          <button
+            className="flex font-medium text-[#86BA9C] text-[14px] gap-2 w-full items-center"
+            onClick={() => {
+              logout();
+            }}
+          >
+            <LogOut size={15} />
+            <span className="text-sm">Logout</span>
+          </button>
+        </div>
       </aside>
     </>
   );

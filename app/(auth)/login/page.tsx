@@ -1,59 +1,57 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { login, Role } from "@/lib/auth";
-import { ChevronDown } from "lucide-react";
+import { useAuth } from "@/components/providers/auth-provider";
+import { ChevronDown, AlertCircle } from "lucide-react";
+import { ConnectionStatus } from "@/components/ui-custom/connectivity/connection-status";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [site, setSite] = useState("Mamuju, Sulawesi");
-  const [role, setRole] = useState<Role>("Admin");
-  const router = useRouter();
+  const [email, setEmail] = useState("admin@ggc.demo");
+  const [password, setPassword] = useState("demo123");
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { login } = useAuth();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password) return alert("Email dan password wajib diisi.");
+    setErrorMsg(null);
+    if (!email || !password) {
+      setErrorMsg("Email dan password wajib diisi.");
+      return;
+    }
 
-    login({ id: "u1", name: "User Demo", role, site });
-
-    // Redirect based on role
-    switch (role) {
-      case "Inbound Operator":
-        router.push("/inbound");
-        break;
-      case "Field/Screening Operator":
-        router.push("/stock-card");
-        break;
-      case "QM/Outbound Operator":
-        router.push("/outbound");
-        break;
-      case "Kasir/Retail":
-        router.push("/retail");
-        break;
-      case "Finance":
-        router.push("/procurement");
-        break;
-      case "Admin":
-      case "Supervisor":
-      case "Viewer":
-      default:
-        router.push("/dashboard");
-        break;
+    setIsSubmitting(true);
+    try {
+      const result = await login(email, password);
+      if (!result.success && result.error) {
+        setErrorMsg(result.error);
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      setErrorMsg("Gagal melakukan autentikasi.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
+  const handleSelectDemoUser = (userEmail: string) => {
+    setEmail(userEmail);
+    setPassword("demo123");
+    setErrorMsg(null);
+  };
+
   return (
-    <div className="flex h-screen w-full bg-white overflow-hidden">
-      {/* Left Branding Panel */}
+    <div className="min-h-screen w-full bg-white flex flex-col md:flex-row overflow-x-hidden">
+      {/* ========================================================= */}
+      {/* DESKTOP LEFT BRANDING PANEL (Visible on md and larger)    */}
+      {/* ========================================================= */}
       <div className="hidden md:flex w-[45%] lg:w-[48%] bg-gradient-to-b from-[#114B26] to-[#1B7A3D] p-10 lg:p-20 flex-col justify-center text-white relative">
         <div className="flex flex-col max-w-[500px]">
           <div className="mb-10">
             <h1 className="text-4xl lg:text-[44px] font-extrabold tracking-wider text-white mb-3">
               GGC STOCKFILE
             </h1>
-            <p className="text-[13px] tracking-[0.2em] text-[#95b1c7] font-semibold">
+            <p className="text-[13px] tracking-[0.2em] text-[#95b1c7] font-semibold uppercase">
               PKS LOGISTICS & INVENTORY
             </p>
           </div>
@@ -81,10 +79,30 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* Right Form Panel */}
-      <div className="flex flex-1 flex-col justify-center px-8 lg:px-24">
-        <div className="w-full max-w-[520px] mx-auto">
-          <div className="mb-8">
+      {/* ========================================================= */}
+      {/* MOBILE PWA TOP HEADER (Visible only on mobile < md)       */}
+      {/* ========================================================= */}
+      <div className="flex justify-between md:hidden bg-[#0B4A2B] text-white px-5 py-3.5 shadow-sm">
+        <div>
+          <h1 className="text-base font-bold leading-tight">Masuk</h1>
+          <p className="text-[11px] text-[#86C29E] font-medium mt-0.5">
+            GGC Stockfile
+          </p>
+        </div>
+
+        {/* Status Badges */}
+        <div className="">
+          <ConnectionStatus variant="compact" showDemoToggle={false} />
+        </div>
+      </div>
+
+      {/* ========================================================= */}
+      {/* MAIN FORM PANEL (Desktop & Mobile)                        */}
+      {/* ========================================================= */}
+      <div className="flex-1 flex flex-col justify-center px-6 py-8 md:px-12 lg:px-24 bg-white">
+        <div className="w-full max-w-[480px] mx-auto">
+          {/* Desktop Heading */}
+          <div className="hidden md:block mb-8">
             <h2 className="text-[28px] font-bold text-[#173A5E] mb-2">
               Masuk ke akun
             </h2>
@@ -93,23 +111,42 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <form onSubmit={handleLogin} className="flex flex-col gap-6">
+          {/* Mobile Logo Header */}
+          <div className="block md:hidden text-center my-6">
+            <h2 className="text-2xl font-extrabold text-[#0B4A2B] tracking-wider uppercase">
+              GGC STOCKFILE
+            </h2>
+            <p className="text-[11px] font-semibold tracking-[0.2em] text-[#718096] uppercase mt-1">
+              PKS LOGISTICS
+            </p>
+          </div>
+
+          {/* Error Message Alert */}
+          {errorMsg && (
+            <div className="mb-4 rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-xs text-red-700 flex items-center gap-2 font-medium">
+              <AlertCircle className="w-4 h-4 text-red-600 flex-shrink-0" />
+              <span>{errorMsg}</span>
+            </div>
+          )}
+
+          {/* Form */}
+          <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label className="block text-[14px] font-bold text-[#64748B] mb-2">
+              <label className="hidden md:block text-sm font-bold text-[#64748B] mb-1.5">
                 Email
               </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="operator.mmj@ggc.id"
-                className="w-full rounded-lg border border-[#E2E8F0] px-4 py-3.5 text-[15px] text-[#173A5E] placeholder:text-[#94A3B8] outline-none focus:border-[#1B7A3D]"
+                placeholder="admin@ggc.demo"
+                className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm text-gray-800 placeholder:text-gray-400 outline-none focus:border-[#1B7A3D] focus:ring-1 focus:ring-[#1B7A3D]"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-[14px] font-bold text-[#64748B] mb-2">
+              <label className="hidden md:block text-sm font-bold text-[#64748B] mb-1.5">
                 Password
               </label>
               <input
@@ -117,83 +154,93 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full rounded-lg border border-[#E2E8F0] px-4 py-3.5 text-[15px] text-[#173A5E] placeholder:text-[#94A3B8] tracking-widest outline-none focus:border-[#1B7A3D]"
+                className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm text-gray-800 placeholder:text-gray-400 outline-none focus:border-[#1B7A3D] focus:ring-1 focus:ring-[#1B7A3D]"
                 required
               />
             </div>
 
-            <div className="flex items-center justify-between mt-1">
-              <label className="flex items-center gap-2.5 text-[13px] text-[#64748B] cursor-pointer select-none">
+            <div className="flex items-center justify-between pt-1">
+              <label className="flex items-center gap-2 text-xs text-gray-600 cursor-pointer select-none">
                 <input
                   type="checkbox"
-                  className="w-4 h-4 rounded hover:cursor-pointer border-[#E2E8F0] text-[#1B7A3D] focus:ring-[#1B7A3D]"
+                  defaultChecked
+                  className="w-4 h-4 rounded border-gray-300 text-[#1B7A3D] focus:ring-[#1B7A3D] accent-[#1B7A3D]"
                 />
                 Ingat perangkat ini
               </label>
               <a
                 href="#"
-                className="text-[13px] text-[#1B7A3D] font-bold hover:underline"
+                className="text-xs text-[#1B7A3D] font-bold hover:underline"
               >
                 Lupa password?
               </a>
             </div>
 
-            <div className="mt-2">
-              <label className="block text-[14px] font-bold text-[#64748B] mb-2">
-                Stockpile / Site
-              </label>
-              <div className="relative">
-                <select
-                  value={site}
-                  onChange={(e) => setSite(e.target.value)}
-                  className="w-full hover:cursor-pointer rounded-lg border border-[#E2E8F0] pl-4 pr-40 py-3.5 text-[15px] text-[#173A5E] outline-none focus:border-[#1B7A3D] appearance-none bg-white relative z-10 bg-transparent"
-                >
-                  <option>Mamuju, Sulawesi</option>
-                  <option>Marunda, Jakarta</option>
-                  <option>Teluk Bayur, Padang</option>
-                </select>
-                <ChevronDown
-                  size={18}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[#64748B] pointer-events-none z-20"
-                />
-              </div>
-            </div>
-
             <button
               type="submit"
-              className="mt-4 w-full rounded-lg bg-[#1B7A3D] py-4 text-[15px] font-bold text-white hover:bg-[#166a34] transition-colors"
+              disabled={isSubmitting}
+              className="w-full mt-2 rounded-xl bg-[#1B7A3D] hover:bg-[#166a34] py-3.5 text-base font-bold text-white shadow-sm transition-colors cursor-pointer disabled:opacity-50"
             >
-              Masuk
+              {isSubmitting ? "Memproses..." : "Masuk"}
             </button>
           </form>
 
-          <div className="mt-6 rounded-lg bg-[#E6F3EA] px-4 py-3.5 text-[13px] text-[#1B7A3D] flex items-center gap-2.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#1B7A3D] flex-shrink-0"></span>
-            <span>
-              Lokasi terdeteksi: <strong>{site}</strong> — sesi terikat ke site
-              ini.
+          {/* Subtle Quick Demo User Picker */}
+          <div className="mt-8 pt-4 border-t border-gray-100 flex flex-col items-center">
+            <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">
+              Pilih Akun Demo (Password: demo123)
             </span>
-          </div>
-
-          {/* Demo Role Selector (visually toned down) */}
-          <div className="mt-12 flex justify-center opacity-40 hover:opacity-100 transition-opacity">
-            <label className="flex items-center gap-2 text-[11px] text-[#64748B]">
-              Role (Demo):
-              <select
-                value={role}
-                onChange={(e) => setRole(e.target.value as Role)}
-                className="bg-transparent border-b border-[#E2E8F0] outline-none text-[#173A5E] font-medium py-1"
+            <div className="flex flex-wrap justify-center gap-1.5 text-xs text-gray-600">
+              <button
+                type="button"
+                onClick={() => handleSelectDemoUser("admin@ggc.demo")}
+                className="px-2 py-1 bg-gray-100 hover:bg-[#EAF5EF] hover:text-[#1B7A3D] rounded font-medium transition-colors cursor-pointer"
               >
-                <option>Admin</option>
-                <option>Supervisor</option>
-                <option>Finance</option>
-                <option>Inbound Operator</option>
-                <option>Field/Screening Operator</option>
-                <option>QM/Outbound Operator</option>
-                <option>Kasir/Retail</option>
-                <option>Viewer</option>
-              </select>
-            </label>
+                Admin
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSelectDemoUser("supervisor@ggc.demo")}
+                className="px-2 py-1 bg-gray-100 hover:bg-[#EAF5EF] hover:text-[#1B7A3D] rounded font-medium transition-colors cursor-pointer"
+              >
+                Supervisor
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSelectDemoUser("inbound@ggc.demo")}
+                className="px-2 py-1 bg-gray-100 hover:bg-[#EAF5EF] hover:text-[#1B7A3D] rounded font-medium transition-colors cursor-pointer"
+              >
+                Inbound (IO)
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSelectDemoUser("field@ggc.demo")}
+                className="px-2 py-1 bg-gray-100 hover:bg-[#EAF5EF] hover:text-[#1B7A3D] rounded font-medium transition-colors cursor-pointer"
+              >
+                Field (FO)
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSelectDemoUser("qm@ggc.demo")}
+                className="px-2 py-1 bg-gray-100 hover:bg-[#EAF5EF] hover:text-[#1B7A3D] rounded font-medium transition-colors cursor-pointer"
+              >
+                QM (QO)
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSelectDemoUser("finance@ggc.demo")}
+                className="px-2 py-1 bg-gray-100 hover:bg-[#EAF5EF] hover:text-[#1B7A3D] rounded font-medium transition-colors cursor-pointer"
+              >
+                Finance
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSelectDemoUser("viewer@ggc.demo")}
+                className="px-2 py-1 bg-gray-100 hover:bg-[#EAF5EF] hover:text-[#1B7A3D] rounded font-medium transition-colors cursor-pointer"
+              >
+                Viewer
+              </button>
+            </div>
           </div>
         </div>
       </div>

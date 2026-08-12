@@ -1,0 +1,24 @@
+{
+  "name": "GGC Stockfile — PKS Logistics & Inventory",
+  "short_name": "GGC Stockfile",
+  "description": "Operational stockpile, procurement, inbound, outbound, fleet, and evidence control for GGC.",
+  "start_url": "/dashboard",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0B4A2B",
+  "theme_color": "#0B4A2B",
+  "icons": [
+    {
+      "src": "/icon-light-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

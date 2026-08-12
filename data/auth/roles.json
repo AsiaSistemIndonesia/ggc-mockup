@@ -1,0 +1,40 @@
+[
+  {
+    "code": "IO",
+    "name": "Inbound Operator",
+    "type": "operator",
+    "operatorSubtype": "inbound"
+  },
+  {
+    "code": "FO",
+    "name": "Field/Screening Operator",
+    "type": "operator",
+    "operatorSubtype": "field_screening"
+  },
+  {
+    "code": "QO",
+    "name": "QM/Outbound Operator",
+    "type": "operator",
+    "operatorSubtype": "qm_outbound"
+  },
+  {
+    "code": "SUP",
+    "name": "Supervisor / STF Manager",
+    "type": "management"
+  },
+  {
+    "code": "FIN",
+    "name": "Finance",
+    "type": "finance"
+  },
+  {
+    "code": "ADM",
+    "name": "Admin / Management",
+    "type": "admin"
+  },
+  {
+    "code": "VW",
+    "name": "Viewer",
+    "type": "viewer"
+  }
+]

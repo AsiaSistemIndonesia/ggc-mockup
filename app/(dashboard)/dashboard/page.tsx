@@ -75,7 +75,7 @@ const alerts = [
 export default function DashboardPage() {
   const { user } = useAuth();
 
-  const site = user?.site || "Mamuju, Sulawesi";
+  const site = user?.siteId || "Mamuju, Sulawesi";
   const filteredStacks = useMemo(
     () =>
       site.startsWith("All") ? stacks : stacks.filter((s) => s.site === site),

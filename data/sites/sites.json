@@ -1,0 +1,23 @@
+[
+  {
+    "id": "MAMUJU",
+    "name": "Mamuju",
+    "province": "Sulawesi",
+    "latitude": -2.67,
+    "longitude": 118.89
+  },
+  {
+    "id": "MARUNDA",
+    "name": "Marunda",
+    "province": "Jakarta",
+    "latitude": -6.09,
+    "longitude": 106.96
+  },
+  {
+    "id": "TELUK_BAYUR",
+    "name": "Teluk Bayur",
+    "province": "Padang",
+    "latitude": -1.02,
+    "longitude": 100.37
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "resource": "dashboard",
+    "actions": ["view"]
+  },
+  {
+    "resource": "inbound",
+    "actions": ["view", "create", "edit"]
+  },
+  {
+    "resource": "stock_card",
+    "actions": ["view", "input"]
+  }
+]

@@ -5,10 +5,14 @@ import { usePathname } from "next/navigation";
 import { navigation } from "@/lib/navigation";
 import { MoreHorizontal } from "lucide-react";
 
+import { useAuth } from "@/components/providers/auth-provider";
+import { canAccessRoute } from "@/lib/rbac/rbac-engine";
+
 export function MobileNav({ onMoreClick }: { onMoreClick?: () => void }) {
   const pathname = usePathname();
+  const { user } = useAuth();
 
-  const bottomNavItems = [
+  const allBottomNavItems = [
     {
       label: "Home",
       href: "/dashboard",
@@ -30,6 +34,10 @@ export function MobileNav({ onMoreClick }: { onMoreClick?: () => void }) {
       icon: navigation.find((n) => n.label === "Outbound")?.icon,
     },
   ];
+
+  const bottomNavItems = allBottomNavItems.filter((item) =>
+    canAccessRoute(user?.role, item.href)
+  );
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-40 flex h-[61px] items-center justify-around border-t border-[#E2E8F0] bg-white px-1 lg:hidden">

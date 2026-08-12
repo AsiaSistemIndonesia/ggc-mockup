@@ -1,0 +1,66 @@
+[
+  {
+    "id": "USR-IO-001",
+    "name": "Demo Inbound Operator",
+    "email": "inbound@ggc.demo",
+    "password": "demo123",
+    "role": "IO",
+    "operatorSubtype": "inbound",
+    "siteId": "MAMUJU",
+    "status": "active"
+  },
+  {
+    "id": "USR-FO-001",
+    "name": "Demo Field Operator",
+    "email": "field@ggc.demo",
+    "password": "demo123",
+    "role": "FO",
+    "operatorSubtype": "field_screening",
+    "siteId": "MAMUJU",
+    "status": "active"
+  },
+  {
+    "id": "USR-QO-001",
+    "name": "Demo QM Operator",
+    "email": "qm@ggc.demo",
+    "password": "demo123",
+    "role": "QO",
+    "operatorSubtype": "qm_outbound",
+    "siteId": "MAMUJU",
+    "status": "active"
+  },
+  {
+    "id": "USR-SUP-001",
+    "name": "Demo Supervisor",
+    "email": "supervisor@ggc.demo",
+    "role": "SUP",
+    "siteId": "MAMUJU",
+    "status": "active"
+  },
+  {
+    "id": "USR-FIN-001",
+    "name": "Demo Finance",
+    "email": "finance@ggc.demo",
+    "password": "demo123",
+    "role": "FIN",
+    "siteId": "MAMUJU",
+    "status": "active"
+  },
+  {
+    "id": "USR-ADM-001",
+    "name": "Demo Administrator",
+    "email": "admin@ggc.demo",
+    "password": "demo123",
+    "role": "ADM",
+    "siteId": "MAMUJU",
+    "status": "active"
+  },
+  {
+    "id": "USR-VW-001",
+    "name": "Demo Viewer",
+    "email": "viewer@ggc.demo",
+    "role": "VW",
+    "siteId": "MAMUJU",
+    "status": "active"
+  }
+]
