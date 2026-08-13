@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ggc-stockfile-shell-v1';
+const CACHE_NAME = 'ggc-stockfile-shell-v2';
 
 const APP_SHELL_URLS = [
   '/',
