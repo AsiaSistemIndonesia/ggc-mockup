@@ -21,18 +21,63 @@ export const ROLE_LANDING_ROUTES: Record<string, string> = {
 const SCREEN_ACCESS_MATRIX: Record<string, string[]> = {
   IO: ["/dashboard", "/inbound", "/stock", "/cctv", "/cartrack", "/analisa"],
   FO: ["/dashboard", "/stock", "/cctv", "/cartrack", "/analisa"],
-  QO: ["/dashboard", "/stock", "/outbound", "/barge", "/cctv", "/cartrack", "/analisa"],
-  SUP: ["/dashboard", "/procure", "/inbound", "/stock", "/outbound", "/retail", "/barge", "/cartrack", "/cctv", "/analisa", "/reports"],
+  QO: [
+    "/dashboard",
+    "/stock",
+    "/outbound",
+    "/barge",
+    "/cctv",
+    "/cartrack",
+    "/analisa",
+  ],
+  SUP: [
+    "/dashboard",
+    "/procure",
+    "/inbound",
+    "/stock",
+    "/outbound",
+    "/barge",
+    "/cartrack",
+    "/cctv",
+    "/analisa",
+    "/reports",
+  ],
   FIN: ["/dashboard", "/procure", "/stock", "/analisa", "/reports"],
-  ADM: ["/dashboard", "/procure", "/inbound", "/stock", "/outbound", "/retail", "/barge", "/cartrack", "/cctv", "/analisa", "/reports", "/admin"],
-  VW: ["/dashboard", "/inbound", "/stock", "/outbound", "/barge", "/cartrack", "/cctv", "/analisa", "/reports"],
+  ADM: [
+    "/dashboard",
+    "/procure",
+    "/inbound",
+    "/stock",
+    "/outbound",
+    // "/retail",
+    "/barge",
+    "/cartrack",
+    "/cctv",
+    "/analisa",
+    "/reports",
+    "/admin",
+  ],
+  VW: [
+    "/dashboard",
+    "/inbound",
+    "/stock",
+    "/outbound",
+    "/barge",
+    "/cartrack",
+    "/cctv",
+    "/analisa",
+    "/reports",
+  ],
 };
 
 export function getLandingRouteForRole(roleCode: string): string {
   return ROLE_LANDING_ROUTES[roleCode] || "/dashboard";
 }
 
-export function canAccessRoute(roleCode: string | undefined, route: string): boolean {
+export function canAccessRoute(
+  roleCode: string | undefined,
+  route: string,
+): boolean {
   if (!roleCode) return false;
   if (route === "/login" || route === "/") return true;
 
@@ -40,7 +85,9 @@ export function canAccessRoute(roleCode: string | undefined, route: string): boo
   if (!allowedRoutes) return false;
 
   // Check if route matches any allowed base route prefix
-  return allowedRoutes.some((allowed) => route === allowed || route.startsWith(`${allowed}/`));
+  return allowedRoutes.some(
+    (allowed) => route === allowed || route.startsWith(`${allowed}/`),
+  );
 }
 
 export function getRoleName(roleCode: string): string {

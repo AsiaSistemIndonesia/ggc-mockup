@@ -33,6 +33,7 @@
     "id": "USR-SUP-001",
     "name": "Demo Supervisor",
     "email": "supervisor@ggc.demo",
+    "password": "demo123",
     "role": "SUP",
     "siteId": "MAMUJU",
     "status": "active"

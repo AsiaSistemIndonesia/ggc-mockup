@@ -294,15 +294,29 @@ export default function InboundPage() {
           </div>
 
           {/* Supplier Select */}
-          <div className="bg-white border border-[#E2E8F0] rounded-[12px] p-3 text-[13px] text-[#173A5E] font-medium flex justify-between items-center">
-            <span>Supplier: {supplier}</span>
-            <span className="text-[#94A3B8] text-[10px]">▼</span>
+          <div className="relative">
+            <select
+              value={supplier}
+              onChange={(e) => setSupplier(e.target.value)}
+              className="w-full bg-white border border-[#E2E8F0] rounded-[12px] p-3 text-[13px] text-[#173A5E] font-medium appearance-none outline-none cursor-pointer pr-8"
+            >
+              <option value="PT Andalan Sukses Lestari (ASL)">Supplier: PT Andalan Sukses Lestari (ASL)</option>
+              <option value="PT Sawit Makmur Jaya">Supplier: PT Sawit Makmur Jaya</option>
+            </select>
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] text-[10px] pointer-events-none">▼</span>
           </div>
 
           {/* DO Select */}
-          <div className="bg-white border border-[#E2E8F0] rounded-[12px] p-3 text-[13px] text-[#173A5E] font-medium flex justify-between items-center">
-            <span>{doNumber} (sisa 214,6)</span>
-            <span className="text-[#94A3B8] text-[10px]">▼</span>
+          <div className="relative">
+            <select
+              value={doNumber}
+              onChange={(e) => setDoNumber(e.target.value)}
+              className="w-full bg-white border border-[#E2E8F0] rounded-[12px] p-3 text-[13px] text-[#173A5E] font-medium appearance-none outline-none cursor-pointer pr-8"
+            >
+              <option value="DO-2026-001">DO-2026-001 (sisa 214,6 MT)</option>
+              <option value="DO-2026-002">DO-2026-002 (sisa 500,0 MT)</option>
+            </select>
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] text-[10px] pointer-events-none">▼</span>
           </div>
 
           {/* SJ / DO-M Info */}
@@ -399,13 +413,29 @@ export default function InboundPage() {
 
           {/* Stack & Condition Row */}
           <div className="grid grid-cols-2 gap-2.5">
-            <div className="bg-white border border-[#E2E8F0] rounded-[12px] p-3 text-[13px] text-[#173A5E] font-medium flex justify-between items-center">
-              <span>Stack {destinationStack}</span>
-              <span className="text-[#94A3B8] text-[10px]">▼</span>
+            <div className="relative">
+              <select
+                value={destinationStack}
+                onChange={(e) => setDestinationStack(e.target.value)}
+                className="w-full bg-white border border-[#E2E8F0] rounded-[12px] p-3 text-[13px] text-[#173A5E] font-medium appearance-none outline-none cursor-pointer pr-7"
+              >
+                <option value="A1">Stack A1</option>
+                <option value="A2">Stack A2</option>
+                <option value="B1">Stack B1</option>
+              </select>
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] text-[10px] pointer-events-none">▼</span>
             </div>
-            <div className="bg-white border border-[#E2E8F0] rounded-[12px] p-3 text-[13px] text-[#173A5E] font-medium flex justify-between items-center">
-              <span>{kondisiVisual}</span>
-              <span className="text-[#94A3B8] text-[10px]">▼</span>
+            <div className="relative">
+              <select
+                value={kondisiVisual}
+                onChange={(e) => setKondisiVisual(e.target.value)}
+                className="w-full bg-white border border-[#E2E8F0] rounded-[12px] p-3 text-[13px] text-[#173A5E] font-medium appearance-none outline-none cursor-pointer pr-7"
+              >
+                <option value="Good">Kondisi: Good</option>
+                <option value="Fair">Kondisi: Fair</option>
+                <option value="Moist">Kondisi: Moist</option>
+              </select>
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] text-[10px] pointer-events-none">▼</span>
             </div>
           </div>
 
